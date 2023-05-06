@@ -1,0 +1,291 @@
+#####################################################################
+# Variables
+#####################################################################
+
+set $mod Mod4
+set $mod_super Shift
+set $return_key Return
+set $space_key space
+set $tab_key Tab
+set $print_key Print
+set $d_key_code 40
+set $dot_key_code 60
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws0 "0"
+set $parent_focus "a"
+set $horizontal_split "b"
+set $config_key "c"
+set $rofi_launch "d"
+set $split_layout "e"
+set $fullscreen_key "f"
+set $vim_left "h"
+set $vim_down "j"
+set $vim_up "k"
+set $vim_right "l"
+set $picom_toggle "m"
+set $nitrogen_load "n"
+set $discord_key "o"
+set $power_key "p"
+set $kill_key "q"
+set $resize_key "r"
+set $screenshot_key "s"
+set $vm_key "t"
+set $clipboard_key "v"
+set $tab_layout "w"
+
+set $powermenu "Power Settings: L -> Lock" 
+set $resizemenu "Resize Window" 
+set $monitormenu "Monitor Setup: [2] Two | [Shift + 2] Two + 1 | [3] Three | [Shift + 3] Three + 1 | [1] Laptop Screen Only"
+
+set $refresh_i3status killall -SIGUSR1 i3status
+
+#####################################################################
+# Modes
+#####################################################################
+
+mode $resizemenu {
+        bindsym $vim_left resize shrink width 10 px or 10 ppt
+        bindsym $vim_down resize grow height 10 px or 10 ppt
+        bindsym $vim_up resize shrink height 10 px or 10 ppt
+        bindsym $vim_right resize grow width 10 px or 10 ppt
+
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+$resize_key mode "default"
+    }
+
+mode $powermenu { 
+        bindsym l exec i3lock -c 000000; mode "default"
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+p mode "default"
+        bindsym $mod+$mod_super+p mode "default"
+    }
+
+
+
+mode $monitormenu {
+        bindsym 1 exec ~/.screenlayout/1monitor.sh, mode "default"
+        bindsym 2 exec ~/.screenlayout/2monitor.sh, mode "default"
+        bindsym 3 exec ~/.screenlayout/3monitor.sh, mode "default"
+        bindsym $mod_super+2 exec ~/.screenlayout/2monitor\+\1.sh, mode "default"
+        bindsym $mod_super+3 exec ~/.screenlayout/3monitor\+\1.sh, mode "default"
+
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+        bindsym $mod+m mode "default"
+        bindsym $mod+$mod_super+m mode "default"
+    }
+
+
+
+#####################################################################
+# Bar Setup
+#####################################################################
+
+bar {
+        status_command	 polybar example
+        workspace_buttons no
+        tray_output none
+        mode invisible
+    }
+
+
+
+#####################################################################
+# Visual Elements
+#####################################################################
+
+font pango:JetBrainsMonoNL
+# class                 border  backgr. text    indicator child_border
+client.focused          #ff0000 #f80000 #ffffff #fe9e24   #bb0000 
+client.focused_inactive #660000 #5f676a #ffffff #484e50   #220000
+client.unfocused        #220000 #222222 #888888 #292d2e   #220000
+client.urgent           #2f343a #900000 #ffffff #900000   #00FF00
+client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
+
+smart_gaps on
+smart_borders on
+popup_during_fullscreen smart
+hide_edge_borders smart
+workspace_auto_back_and_forth yes
+gaps inner 8
+gaps outer 1
+focus_follows_mouse no
+floating_modifier $mod
+
+assign [class="^looking-glass-client$"] → number $ws0
+
+for_window [class="^.*"] border pixel 3
+
+#####################################################################
+# Startup Commands
+#####################################################################
+
+exec --no-startup-id dex --autostart --environment i3
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i ~/Downloads/Shinsha_Minimal.png
+exec --no-startup-id nm-applet
+
+exec_always --no-startup-id $(killall -q polybar && sudo polybar monitor2)
+
+exec_always --no-startup-id numlockx on
+
+exec --no-startup-id rclone --vfs-cache-mode writes mount "school_onedrive": onedrive
+exec --no-startup-id rclone --vfs-cache-mode writes mount "Google Drive": google
+
+exec greenclip daemon
+
+#####################################################################
+# Key Bindings
+#####################################################################
+### A
+# focus the parent container
+bindsym $mod+$parent_focus focus parent
+bindsym $mod+$mod_super+$parent_focus focus child
+
+### B
+# split in horizontal orientation
+bindsym $mod+$horizontal_split split h
+bindsym $mod+$mod_super+$horizontal_split exec "rofi -modi filebrowser -theme sidebar -show filebrowser -icon-theme 'Papirus' -show-icons"
+
+### C
+# reload the configuration file
+bindsym $mod+$mod_super+$config_key reload
+
+### D
+# mod + d => App launcher
+bindcode $mod+$d_key_code exec "rofi -modi combi,drun,run -show drun -icon-theme 'Papirus' -show-icons"
+# mod + shift + d => Command launcher
+bindcode $mod+$mod_super+$d_key_code exec "rofi -modi run -show run"
+
+### E
+bindsym $mod+$split_layout layout toggle split
+bindsym $mod+$mod_super+$split_layout layout stacking
+
+### F
+# enter fullscreen mode for the focused container
+bindsym $mod+$fullscreen_key fullscreen toggle
+bindsym $mod+$mod_super+$fullscreen_key exec firefox
+
+### H
+bindsym $mod+$vim_left focus left
+bindsym $mod+Left focus left
+bindsym $mod+$mod_super+$vim_left move left
+bindsym $mod+$mod_super+Left move left
+
+### J
+bindsym $mod+$vim_down focus down
+bindsym $mod+Down focus down
+bindsym $mod+$mod_super+$vim_down move down
+bindsym $mod+$mod_super+Down move down
+
+### K
+bindsym $mod+$vim_up focus up
+bindsym $mod+Up focus up
+bindsym $mod+$mod_super+$vim_up move up
+bindsym $mod+$mod_super+Up move up
+
+### L
+bindsym $mod+$vim_right focus right
+bindsym $mod+Right focus right
+bindsym $mod+$mod_super+$vim_right move right
+bindsym $mod+$mod_super+Right move right
+
+### M
+bindsym $mod+$picom_toggle exec bash ~/.config/customscripts/toggle_picom.bash
+bindsym $mod+$mod_super+$picom_toggle mode $monitormenu
+
+### N
+bindsym $mod+$nitrogen_load exec nitrogen --restore
+bindsym $mod+$mod_super+$nitrogen_load exec polybar monitor1-2,exec polybar monitor1-1
+
+### O
+bindsym $mod+$discord_key exec discord
+
+### P
+bindsym $mod+$mod_super+$power_key mode $powermenu
+
+### Q
+# kill focused window
+bindsym $mod+$mod_super+$kill_key kill
+
+
+### R
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+$resize_key mode $resizemenu
+bindsym $mod+$mod_super+$resize_key restart
+
+### S
+bindsym $mod+$mod_super+$screenshot_key exec --no-startup-id flameshot gui
+
+### T
+bindsym $mod+$mod_super+$vm_key exec virt-manager
+
+### V
+# split in vertical orientation
+bindsym $mod+$clipboard_key split v
+bindsym $mod+$mod_super+$clipboard_key exec rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+
+### W
+bindsym $mod+$mod_super+$tab_layout layout tabbed
+
+### .
+# mod + . => emoji launcher
+bindcode $mod+$dot_key_code exec rofi -show emoji
+
+### Return
+# start a terminal
+bindsym $mod+$return_key exec alacritty 
+
+### Space
+bindsym $mod+$mod_super+$space_key floating toggle
+bindsym $mod+$space_key focus mode_toggle
+
+### Tab
+#Scratchpad setup
+bindsym $mod+$mod_super+$tab_key move scratchpad
+bindsym $mod+$tab_key scratchpad show
+
+### Print
+
+### 0-9
+bindsym $mod+$ws1 workspace number $ws1
+bindsym $mod+$ws2 workspace number $ws2
+bindsym $mod+$ws3 workspace number $ws3
+bindsym $mod+$ws4 workspace number $ws4
+bindsym $mod+$ws5 workspace number $ws5
+bindsym $mod+$ws6 workspace number $ws6
+bindsym $mod+$ws7 workspace number $ws7
+bindsym $mod+$ws8 workspace number $ws8
+bindsym $mod+$ws9 workspace number $ws9
+bindsym $mod+$ws0 workspace number $ws0
+bindsym $mod+$mod_super+$ws1 move container to workspace number $ws1
+bindsym $mod+$mod_super+$ws2 move container to workspace number $ws2
+bindsym $mod+$mod_super+$ws3 move container to workspace number $ws3
+bindsym $mod+$mod_super+$ws4 move container to workspace number $ws4
+bindsym $mod+$mod_super+$ws5 move container to workspace number $ws5
+bindsym $mod+$mod_super+$ws6 move container to workspace number $ws6
+bindsym $mod+$mod_super+$ws7 move container to workspace number $ws7
+bindsym $mod+$mod_super+$ws8 move container to workspace number $ws8
+bindsym $mod+$mod_super+$ws9 move container to workspace number $ws9
+bindsym $mod+$mod_super+$ws0 move container to workspace number $ws10
+
+### Multimedia Controls
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -10% && $refresh_i3status
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
+bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
