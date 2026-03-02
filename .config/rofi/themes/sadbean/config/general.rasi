@@ -1,0 +1,41 @@
+@import "font"
+
+* {
+  background-color: transparent;
+
+  border: 0;
+  margin: 0;
+  padding: 0;
+  spacing: 0;
+}
+
+configuration {
+  drun {
+    display-name: "";
+  }
+
+  run {
+    display-name: "";
+  }
+
+  window {
+    display-name: "";
+  }
+
+  emoji {
+      display-name: "";
+    }
+
+  filebrowser {
+    display-name: "";
+  }
+}
+
+inputbar {
+  children: [prompt, entry];
+}
+
+prompt {
+  padding: 10px;
+  text-color: @lavender;
+}

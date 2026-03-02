@@ -1,0 +1,12 @@
+* {
+  background-primary: #1F1F28; 
+  background-secondary: #2A2A37;
+  background-hover: #363646;
+  window-background: #0f0f0ff0;
+
+  base: #1F1F28;
+  lavender: #A4B9EF;
+
+  mauve: #957fb8;
+  border-color: #565575;
+}

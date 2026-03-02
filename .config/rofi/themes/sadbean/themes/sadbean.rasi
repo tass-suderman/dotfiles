@@ -1,0 +1,52 @@
+window {
+  background-color: @window-background;
+  width: 35em;
+  border: 0 2px 2px 2px;
+  location: north;
+  border-color: @border-color;
+  border-radius: 0 0 10px 10px;
+  height: 1000px;
+}
+
+mainbox {
+  padding: 10px;
+  children: [inputbar, listview];
+}
+
+inputbar {
+  background-color: @background-hover;
+  border: 2px;
+  border-color: @border-color;
+  border-radius: 10px;
+  margin: 0 0 10px 0;
+}
+
+entry {
+  padding: 10px;
+  text-color: @lavender;
+}
+
+listview {
+  lines: 10;
+}
+
+element {
+  border-radius: 10px;
+  padding: 10px;
+}
+
+element selected {
+  background-color: @lavender;
+}
+
+element-icon {
+  size: 18px;
+}
+
+element-text {
+  text-color: @lavender;
+}
+
+element-text selected {
+  text-color: @base;
+}
