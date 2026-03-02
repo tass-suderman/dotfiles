@@ -1,0 +1,35 @@
+[colors.primary]
+background = "#000000"
+bright_foreground = "#FFEEEE"
+dim_foreground = "#CCBBBB"
+foreground = "#DDCCCC"
+
+[env]
+TERM = "alacritty"
+
+[font.bold]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Bold"
+
+[font.bold_italic]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Bold Italic"
+
+[font.italic]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Italic"
+
+[font.normal]
+family = "JetBrainsMonoNL Nerd Font Mono"
+style = "Regular"
+
+[window]
+dynamic_title = true
+opacity = 0.9
+title = "Terminal"
+
+[[keyboard.bindings]]
+action = "Paste"
+key = "V"
+mods = "Control | Shift"
+

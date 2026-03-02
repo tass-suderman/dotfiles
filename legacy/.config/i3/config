@@ -1,4 +1,4 @@
-#####################################################################
+#############e#######################################################
 # Variables
 #####################################################################
 
@@ -7,9 +7,9 @@ set $mod_super Shift
 set $return_key Return
 set $space_key space
 set $tab_key Tab
-set $print_key Print
-set $d_key_code 40
 set $dot_key_code 60
+set $print_screen Print
+set $left_control control
 set $ws1 "1"
 set $ws2 "2"
 set $ws3 "3"
@@ -20,28 +20,50 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws0 "0"
+# Focus Parent [Focus Child]
 set $parent_focus "a"
+# Horizontal Split [Open File Browser]
 set $horizontal_split "b"
+# Reload Configuration File
 set $config_key "c"
-set $rofi_launch "d"
-set $split_layout "e"
+# App Launcher [Command Launcher] -- For some reason it only likes the keycode
+set $rofi_launch 40
+# Focus Down [Move Down]
+set $vim_down "e"
+# Toggle Fullscreen [Launch Firefox]
 set $fullscreen_key "f"
-set $vim_left "h"
-set $vim_down "j"
-set $vim_up "k"
-set $vim_right "l"
+# Connect Sony Headphones
+set $bluetooth_connection_key "g"
+# Load Wallpaper [Add Polybar to Other Monitors]
+set $nitrogen_load "h"
+# Focus Up [Move Up]
+set $vim_up "i"
+# Toggle Split Orientation [Toggle Stacking]
+set $split_layout "j"
+# Launch Discord
+set $discord_key "l"
+# Toggle Picom [Open Monitor Menu]
 set $picom_toggle "m"
-set $nitrogen_load "n"
-set $discord_key "o"
+# Focus Left [Move Left]
+set $vim_left "n"
+# Focus Right [Move Right]
+set $vim_right "o"
+# Open Spotify [Open Power Menu]
 set $power_key "p"
+# [Kill Current Window]
 set $kill_key "q"
+# Resize Menu [Restart i3]
 set $resize_key "r"
+# Open Flameshot
 set $screenshot_key "s"
+# Launch Looking Glass in WS0 [Launch Virt Manager]
 set $vm_key "t"
+# Split Vertical [Open Clipboard History]
 set $clipboard_key "v"
+# Launch Tab Layout
 set $tab_layout "w"
 
-set $powermenu "Power Settings: L -> Lock" 
+set $powermenu "Power Settings: [L]ock | [S]leep | Mod+Shift+[R]estart | Mod+Shift+[S]hutdown" 
 set $resizemenu "Resize Window" 
 set $monitormenu "Monitor Setup: [2] Two | [Shift + 2] Two + 1 | [3] Three | [Shift + 3] Three + 1 | [1] Laptop Screen Only"
 
@@ -69,6 +91,9 @@ mode $resizemenu {
 
 mode $powermenu { 
         bindsym l exec i3lock -c 000000; mode "default"
+        bindsym s exec systemctl suspend; mode "default"
+        bindsym $mod+$mod_super+r exec systemctl reboot
+        bindsym $mod+$mod_super+s exec systemctl poweroff
 
         bindsym Return mode "default"
         bindsym Escape mode "default"
@@ -81,7 +106,9 @@ mode $powermenu {
 mode $monitormenu {
         bindsym 1 exec ~/.screenlayout/1monitor.sh, mode "default"
         bindsym 2 exec ~/.screenlayout/2monitor.sh, mode "default"
+        bindsym $left_control+2 exec ~/.screenlayout/2monitor.sh, exec bash ~/.config/customscripts/toggle_picom.bash, exec nitrogen --restore, exec polybar monitor1-2,exec polybar monitor1-1, mode "default"
         bindsym 3 exec ~/.screenlayout/3monitor.sh, mode "default"
+        bindsym $left_control+3 exec ~/.screenlayout/3monitor.sh, exec bash ~/.config/customscripts/toggle_picom.bash, exec nitrogen --restore, exec polybar monitor1-2,exec polybar monitor1-1, mode "default"
         bindsym $mod_super+2 exec ~/.screenlayout/2monitor\+\1.sh, mode "default"
         bindsym $mod_super+3 exec ~/.screenlayout/3monitor\+\1.sh, mode "default"
 
@@ -137,7 +164,7 @@ for_window [class="^.*"] border pixel 3
 #####################################################################
 
 exec --no-startup-id dex --autostart --environment i3
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -i ~/Downloads/Shinsha_Minimal.png
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork -c 000000
 exec --no-startup-id nm-applet
 
 exec_always --no-startup-id $(killall -q polybar && sudo polybar monitor2)
@@ -145,9 +172,13 @@ exec_always --no-startup-id $(killall -q polybar && sudo polybar monitor2)
 exec_always --no-startup-id numlockx on
 
 exec --no-startup-id rclone --vfs-cache-mode writes mount "school_onedrive": onedrive
-exec --no-startup-id rclone --vfs-cache-mode writes mount "Google Drive": google
+exec --no-startup-id rclone --vfs-cache-mode writes mount google: google
 
 exec greenclip daemon
+
+exec --no-startup-id autotiling-rs
+
+exec --no-startup-id setxkbmap -option caps:none
 
 #####################################################################
 # Key Bindings
@@ -168,61 +199,64 @@ bindsym $mod+$mod_super+$config_key reload
 
 ### D
 # mod + d => App launcher
-bindcode $mod+$d_key_code exec "rofi -modi combi,drun,run -show drun -icon-theme 'Papirus' -show-icons"
+bindcode $mod+$rofi_launch exec "rofi -modi combi,drun,run -show drun -icon-theme 'Papirus' -show-icons"
 # mod + shift + d => Command launcher
-bindcode $mod+$mod_super+$d_key_code exec "rofi -modi run -show run"
+bindcode $mod+$mod_super+$rofi_launch exec "rofi -modi run -show run"
 
 ### E
-bindsym $mod+$split_layout layout toggle split
-bindsym $mod+$mod_super+$split_layout layout stacking
+bindsym $mod+$vim_down focus down
+bindsym $mod+Down focus down
+bindsym $mod+$mod_super+$vim_down move down
+bindsym $mod+$mod_super+Down move down
 
 ### F
 # enter fullscreen mode for the focused container
 bindsym $mod+$fullscreen_key fullscreen toggle
 bindsym $mod+$mod_super+$fullscreen_key exec firefox
 
+### G
+bindsym $mod+$bluetooth_connection_key exec bluetoothctl connectgreenclip 
+
 ### H
-bindsym $mod+$vim_left focus left
-bindsym $mod+Left focus left
-bindsym $mod+$mod_super+$vim_left move left
-bindsym $mod+$mod_super+Left move left
+bindsym $mod+$nitrogen_load exec nitrogen --restore
+bindsym $mod+$mod_super+$nitrogen_load exec polybar monitor1-2,exec polybar monitor1-1
 
-### J
-bindsym $mod+$vim_down focus down
-bindsym $mod+Down focus down
-bindsym $mod+$mod_super+$vim_down move down
-bindsym $mod+$mod_super+Down move down
-
-### K
+### I
 bindsym $mod+$vim_up focus up
 bindsym $mod+Up focus up
 bindsym $mod+$mod_super+$vim_up move up
 bindsym $mod+$mod_super+Up move up
 
+### J
+bindsym $mod+$split_layout layout toggle split
+bindsym $mod+$mod_super+$split_layout layout stacking
+
 ### L
-bindsym $mod+$vim_right focus right
-bindsym $mod+Right focus right
-bindsym $mod+$mod_super+$vim_right move right
-bindsym $mod+$mod_super+Right move right
+bindsym $mod+$discord_key exec discord
 
 ### M
 bindsym $mod+$picom_toggle exec bash ~/.config/customscripts/toggle_picom.bash
 bindsym $mod+$mod_super+$picom_toggle mode $monitormenu
 
 ### N
-bindsym $mod+$nitrogen_load exec nitrogen --restore
-bindsym $mod+$mod_super+$nitrogen_load exec polybar monitor1-2,exec polybar monitor1-1
+bindsym $mod+$vim_left focus left
+bindsym $mod+Left focus left
+bindsym $mod+$mod_super+$vim_left move left
+bindsym $mod+$mod_super+Left move left
 
 ### O
-bindsym $mod+$discord_key exec discord
+bindsym $mod+$vim_right focus right
+bindsym $mod+Right focus right
+bindsym $mod+$mod_super+$vim_right move right
+bindsym $mod+$mod_super+Right move right
 
 ### P
+bindsym $mod+$power_key exec --no-startup-id spotify-launcher
 bindsym $mod+$mod_super+$power_key mode $powermenu
 
 ### Q
 # kill focused window
 bindsym $mod+$mod_super+$kill_key kill
-
 
 ### R
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
@@ -233,6 +267,7 @@ bindsym $mod+$mod_super+$resize_key restart
 bindsym $mod+$mod_super+$screenshot_key exec --no-startup-id flameshot gui
 
 ### T
+bindsym $mod+$vm_key exec looking-glass-client -S -a -s -F, workspace number $ws0
 bindsym $mod+$mod_super+$vm_key exec virt-manager
 
 ### V
@@ -261,6 +296,7 @@ bindsym $mod+$mod_super+$tab_key move scratchpad
 bindsym $mod+$tab_key scratchpad show
 
 ### Print
+bindsym $left_control+$print_screen exec --no-startup-id flameshot gui
 
 ### 0-9
 bindsym $mod+$ws1 workspace number $ws1
@@ -282,7 +318,7 @@ bindsym $mod+$mod_super+$ws6 move container to workspace number $ws6
 bindsym $mod+$mod_super+$ws7 move container to workspace number $ws7
 bindsym $mod+$mod_super+$ws8 move container to workspace number $ws8
 bindsym $mod+$mod_super+$ws9 move container to workspace number $ws9
-bindsym $mod+$mod_super+$ws0 move container to workspace number $ws10
+bindsym $mod+$mod_super+$ws0 move container to workspace number $ws0
 
 ### Multimedia Controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +10% && $refresh_i3status

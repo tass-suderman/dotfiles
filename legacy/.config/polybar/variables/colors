@@ -1,0 +1,15 @@
+[colors]
+background = #88222222
+background-alt = #770000
+focused-underline = #FF0000
+unfocused-underline = #A0A0A0
+unfocused-foreground = #A5A5A5
+visible-underline = #220000
+visible-foreground = #A5A5A5
+foreground = #DDEEDD
+primary = #FFFFFF
+secondary = #CCCCCC
+alert = #FFEEEE
+disabled = #FFAA00
+spotify = #1DB954
+

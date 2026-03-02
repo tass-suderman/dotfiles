@@ -1,0 +1,23 @@
+{
+  "style": "~/.config/waybar/style.css",
+  "layer": "bottom",
+  "position": "top",
+  "height": 20,
+  "modules-left": [
+    "custom/launcher",
+    "custom/cava",
+    "custom/weather"
+  ],
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+  "modules-right": [
+    "battery",
+    "bluetooth",
+    "pulseaudio",
+    "clock",
+    "tray",
+    "custom/notification"
+  ],
+  "include": "~/.config/waybar/modules.jsonc"
+}
