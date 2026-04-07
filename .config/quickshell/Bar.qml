@@ -10,9 +10,9 @@ import QtQuick.Layouts
 PanelWindow {
     id: root
 
-    // Render on the bottom Wayland layer so app windows are always on top,
-    // matching waybar's `"layer": "bottom"`.
-    WlrLayershell.layer: WlrLayer.Bottom
+    // Render on the Top layer so the launcher popup (Bottom layer) appears to
+    // slide out from behind the bar.
+    WlrLayershell.layer: WlrLayer.Top
     WlrLayershell.namespace: "quickshell-bar"
 
     anchors {

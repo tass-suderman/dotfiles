@@ -1,1 +1,2 @@
-singleton Colors 1.0 Colors.qml
+singleton Colors          1.0 Colors.qml
+singleton LauncherService 1.0 LauncherService.qml

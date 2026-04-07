@@ -41,7 +41,7 @@ Item {
                 "if ! bluetoothctl show | grep -q 'Powered: yes'; then echo off; exit; fi",
                 "INFO=$(bluetoothctl info 2>/dev/null)",
                 "if echo \"$INFO\" | grep -q 'Connected: yes'; then",
-                "  ALIAS=$(echo \"$INFO\" | awk '/Alias:/{print $2}')",
+                "  ALIAS=$(echo \"$INFO\" | awk '/Alias:/{$1=\"\"; print substr($0,2)}')",
                 "  BATT=$(echo \"$INFO\" | awk '/Battery Percentage:/{gsub(/[()]/,\"\",$NF); print $NF}')",
                 "  echo \"connected:${ALIAS}:${BATT:-}\"",
                 "else",
